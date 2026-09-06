@@ -1,7 +1,7 @@
 /** Detailed pricing page with plan comparison. */
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Check, Minus, ArrowRight, Zap, Sparkles, X, MessageCircle, GitBranch } from "lucide-react";
+import { Check, Minus, ArrowRight, Zap } from "lucide-react";
 import { Badge, Button, KenteBar, Modal } from "../../components/ui";
 import { cx, ghs } from "../../lib/format";
 import { useAnchorNav } from "../../components/layout/PublicLayout";
@@ -48,7 +48,6 @@ export default function Pricing() {
   const signedIn = !!authService.getSession();
   const [yearly, setYearly] = React.useState(false);
   const [selectedTier, setSelectedTier] = React.useState<typeof TIERS[number] | null>(null);
-  const [aiOpen, setAiOpen] = React.useState(false);
 
   const continueWithTier = (tier: typeof TIERS[number]) => {
     if (!signedIn) {
@@ -188,40 +187,6 @@ export default function Pricing() {
           <Button size="lg" onClick={() => go("/register")}>Create your free account <ArrowRight className="size-4" /></Button>
           <p className="text-xs text-faint mt-3">Prices include all taxes. Frontend demo — no real charge is made.</p>
         </div>
-      </div>
-      <div className="fixed bottom-5 right-5 z-40">
-        {aiOpen && (
-          <div className="absolute bottom-16 right-0 w-[calc(100vw-2.5rem)] sm:w-80 rounded-2xl border border-line bg-card p-4 shadow-pop animate-scale-in">
-            <div className="flex items-start gap-3">
-              <span className="grid place-items-center size-9 rounded-xl bg-navy text-gold shrink-0"><Sparkles className="size-4" /></span>
-              <div className="min-w-0 flex-1">
-                <div className="flex items-center justify-between gap-2">
-                  <p className="font-display font-bold text-ink">KasaBiz AI</p>
-                  <button onClick={() => setAiOpen(false)} aria-label="Close AI assistant" className="text-faint hover:text-ink"><X className="size-4" /></button>
-                </div>
-                <p className="text-xs text-sub mt-1 leading-relaxed">Not sure which plan fits? Here’s a quick way to compare.</p>
-              </div>
-            </div>
-            <div className="mt-4 grid gap-2">
-              <button onClick={() => setSelectedTier(TIERS[1])} className="flex items-center gap-3 rounded-xl border border-line bg-card2 p-3 text-left hover:border-brand hover:bg-brand-soft transition">
-                <span className="grid place-items-center size-8 rounded-lg bg-brand-soft text-brand"><MessageCircle className="size-4" /></span>
-                <span className="flex-1"><b className="block text-sm text-ink">Preview Pro</b><span className="text-[11px] text-sub">Best for one busy shop</span></span>
-                <ArrowRight className="size-4 text-faint" />
-              </button>
-              <button onClick={() => setSelectedTier(TIERS[2])} className="flex items-center gap-3 rounded-xl border border-line bg-card2 p-3 text-left hover:border-gold hover:bg-gold-soft transition">
-                <span className="grid place-items-center size-8 rounded-lg bg-gold-soft text-gold-deep"><GitBranch className="size-4" /></span>
-                <span className="flex-1"><b className="block text-sm text-ink">Preview Business</b><span className="text-[11px] text-sub">For teams and branches</span></span>
-                <ArrowRight className="size-4 text-faint" />
-              </button>
-            </div>
-            <p className="text-[10px] text-faint mt-3 text-center">Demo only — no payment is taken.</p>
-          </div>
-        )}
-        <button onClick={() => setAiOpen((open) => !open)} aria-label="Open KasaBiz AI plan assistant"
-          className="group flex items-center gap-2 rounded-full bg-navy text-white pl-3 pr-4 py-3 shadow-pop hover:bg-navy3 transition-all hover:-translate-y-1">
-          <span className="grid place-items-center size-8 rounded-full bg-gold text-navy"><Sparkles className="size-4" /></span>
-          <span className="text-sm font-bold">Ask AI</span>
-        </button>
       </div>
       <Modal
         open={!!selectedTier}

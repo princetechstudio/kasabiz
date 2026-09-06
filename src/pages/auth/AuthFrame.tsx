@@ -36,7 +36,7 @@ export default function AuthFrame({ children }: { children: React.ReactNode }) {
           <figure className="rounded-xl bg-white/6 border border-white/10 p-5 max-w-md">
             <Quote className="size-5 text-gold" />
             <blockquote className="text-[15px] leading-relaxed text-white/85 mt-2">
-              “Before KasaBiz I knew my cash, not my profit. Now I know exactly what each day brought — even the days I wasn't at the shop.”
+              “Before Sika Boafo I knew my cash, not my profit. Now I know exactly what each day brought — even the days I wasn't at the shop.”
             </blockquote>
             <figcaption className="mt-3 text-sm font-bold text-gold">Prince Ankomah · Prince Fashion Store, Osu</figcaption>
           </figure>

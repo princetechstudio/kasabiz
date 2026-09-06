@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Link, NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowRight, Menu, X, MapPin, Phone, Mail, ChevronDown, Instagram, Facebook, Linkedin, Sparkles } from "lucide-react";
+import { ArrowRight, Menu, X, MapPin, Phone, Mail, ChevronDown, Instagram, Facebook, Linkedin } from "lucide-react";
 import { Button, KenteBar } from "../ui";
 import { cx } from "../../lib/format";
 import { authService } from "../../services/authService";
@@ -37,7 +37,6 @@ export function useAnchorNav() {
 export default function PublicLayout() {
   const [open, setOpen] = useState(false);
   const [solutionsOpen, setSolutionsOpen] = useState(false);
-  const [aiOpen, setAiOpen] = useState(false);
   const go = useAnchorNav();
   const loc = useLocation();
   const signedIn = !!authService.getSession();
@@ -48,7 +47,7 @@ export default function PublicLayout() {
     <div className="min-h-screen bg-paper flex flex-col">
       <header className="sticky top-0 z-50 border-b border-line bg-paper/85 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center gap-6">
-          <Link to="/" aria-label="KasaBiz home"><Logo /></Link>
+          <Link to="/" aria-label="Sika Boafo home"><Logo /></Link>
           <nav className="hidden md:flex items-center gap-1 ml-4" aria-label="Public navigation">
             {LINKS.map((l) => (
              <div key={l.label} className="relative">
@@ -111,17 +110,6 @@ export default function PublicLayout() {
         </AnimatePresence>
       </main>
 
-      <div className="fixed bottom-5 right-5 z-40">
-        {aiOpen && (
-          <div className="absolute bottom-16 right-0 w-72 rounded-2xl border border-line bg-card p-4 shadow-pop animate-scale-in">
-            <div className="flex items-center gap-2"><span className="grid place-items-center size-8 rounded-lg bg-navy text-gold"><Sparkles className="size-4" /></span><p className="font-display font-bold text-ink">KasaBiz AI</p></div>
-            <p className="text-xs text-sub mt-2 leading-relaxed">I can help you choose a plan or show the workflow built for your business.</p>
-            <div className="grid gap-2 mt-3"><button onClick={() => go("/pricing")} className="rounded-lg bg-brand-soft px-3 py-2 text-left text-xs font-bold text-brand">Compare upgrades</button><button onClick={() => go("/demo")} className="rounded-lg bg-card2 px-3 py-2 text-left text-xs font-bold text-ink">Book a walkthrough</button></div>
-          </div>
-        )}
-        <button onClick={() => setAiOpen((value) => !value)} aria-label="Open KasaBiz AI assistant" className="flex items-center gap-2 rounded-full bg-navy text-white pl-3 pr-4 py-3 shadow-pop hover:bg-navy3 transition-all hover:-translate-y-1"><span className="grid place-items-center size-8 rounded-full bg-gold text-navy"><Sparkles className="size-4" /></span><span className="text-sm font-bold">Ask AI</span></button>
-      </div>
-
       <footer className="bg-navy text-white mt-auto">
         <KenteBar className="rounded-none" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-14 grid gap-10 md:grid-cols-2 lg:grid-cols-[1.3fr_0.8fr_0.8fr_0.8fr_0.8fr_1.1fr]">
@@ -158,7 +146,7 @@ export default function PublicLayout() {
         </div>
         <div className="border-t border-white/10">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-white/45">
-            <p>© {new Date().getFullYear()} KasaBiz. Frontend demo — no real payments or data.</p>
+            <p>© {new Date().getFullYear()} Sika Boafo. Frontend demo — no real payments or data.</p>
             <div className="flex items-center gap-3"><button onClick={() => go("/privacy")} className="hover:text-gold transition">Privacy</button><button onClick={() => go("/terms")} className="hover:text-gold transition">Terms</button><span>Akwaaba! 🇬🇭 made with care in Accra</span></div>
           </div>
         </div>

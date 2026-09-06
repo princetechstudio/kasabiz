@@ -11,7 +11,7 @@ export default function Demo() {
         <div aria-hidden className="hero-orb hero-orb-gold" /><div aria-hidden className="hero-grid" /><KenteBar className="rounded-none" />
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-16 lg:py-20">
           <Badge tone="gold"><CalendarCheck className="size-3.5" /> Product walkthrough</Badge>
-          <h1 className="font-display font-extrabold text-4xl sm:text-6xl max-w-3xl mt-5">See how KasaBiz can fit your business.</h1>
+          <h1 className="font-display font-extrabold text-4xl sm:text-6xl max-w-3xl mt-5">See how Sika Boafo can fit your business.</h1>
           <p className="text-white/70 text-lg mt-5 max-w-2xl">Tell us what you sell and we’ll show you the fastest way to track sales, stock, profit and customers.</p>
         </div>
       </section>

@@ -33,7 +33,7 @@ export default function Admin() {
           <div className="h-16 flex items-center px-5 border-b border-white/8 gap-2.5">
             <span className="grid place-items-center size-8 rounded-lg bg-danger text-white"><ShieldCheck className="size-4" /></span>
             <div>
-              <p className="font-display font-extrabold leading-none">KasaBiz</p>
+              <p className="font-display font-extrabold leading-none">Sika Boafo</p>
               <p className="text-[10px] font-bold uppercase tracking-widest text-white/40 mt-0.5">Admin Console</p>
             </div>
           </div>

@@ -260,10 +260,10 @@ function ProblemSection() {
           <div className="p-8 sm:p-10 grid lg:grid-cols-[1.2fr_1fr] gap-8 items-center">
             <div>
               <h3 className="font-display font-extrabold text-2xl sm:text-3xl leading-tight">
-                Meet KasaBiz — your business, <span className="text-gold">in your pocket.</span>
+                Meet Sika Boafo — your business, <span className="text-gold">in your pocket.</span>
               </h3>
               <p className="text-white/70 mt-3 leading-relaxed max-w-lg">
-                Record a sale in seconds. KasaBiz updates your stock, reminds debtors, totals your
+                Record a sale in seconds. Sika Boafo updates your stock, reminds debtors, totals your
                 profit and keeps every receipt safe — all in Ghana cedis.
               </p>
             </div>
@@ -322,19 +322,19 @@ function ProofSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="grid lg:grid-cols-[0.85fr_1.15fr] gap-10 items-center">
           <div>
-            <p className="text-sm font-bold text-brand uppercase tracking-wider flex items-center gap-2"><MessageSquare className="size-4" /> The KasaBiz difference</p>
+            <p className="text-sm font-bold text-brand uppercase tracking-wider flex items-center gap-2"><MessageSquare className="size-4" /> The Sika Boafo difference</p>
             <h2 className="font-display font-extrabold text-3xl sm:text-[42px] leading-tight text-ink mt-3">From guessing to knowing.</h2>
             <p className="text-sub text-lg mt-4 leading-relaxed">Replace scattered records with a calm, reliable view of every cedi moving through your business.</p>
           </div>
           <div className="grid sm:grid-cols-2 gap-5">
             <div className="rounded-2xl border border-danger/20 bg-danger-soft/40 p-6">
-              <p className="text-xs font-bold uppercase tracking-wider text-danger">Before KasaBiz</p>
+              <p className="text-xs font-bold uppercase tracking-wider text-danger">Before Sika Boafo</p>
               <ul className="mt-5 space-y-3 text-sm text-sub">
                 {["Receipts disappear in drawers", "Stock surprises you at the till", "Profit is a monthly guess"].map((x) => <li key={x} className="flex gap-2"><EyeOff className="size-4 text-danger shrink-0" />{x}</li>)}
               </ul>
             </div>
             <div className="rounded-2xl border border-ok/20 bg-ok-soft/50 p-6">
-              <p className="text-xs font-bold uppercase tracking-wider text-ok-deep">After KasaBiz</p>
+              <p className="text-xs font-bold uppercase tracking-wider text-ok-deep">After Sika Boafo</p>
               <ul className="mt-5 space-y-3 text-sm text-sub">
                 {["Every sale has a safe digital trail", "Low-stock alerts arrive early", "Daily profit is clear"].map((x) => <li key={x} className="flex gap-2"><CheckCircle2 className="size-4 text-ok-deep shrink-0" />{x}</li>)}
               </ul>
@@ -573,7 +573,7 @@ function PricingPreview({ go }: { go: (to: string) => void }) {
 /* ----------------------------------- FAQ ----------------------------------- */
 
 const FAQS = [
-  { q: "Do I need internet all the time?", a: "KasaBiz is built mobile-first and light on data. Recording sales works smoothly on 3G, and your numbers sync and back up automatically when you're online." },
+  { q: "Do I need internet all the time?", a: "Sika Boafo is built mobile-first and light on data. Recording sales works smoothly on 3G, and your numbers sync and back up automatically when you're online." },
   { q: "Can I record Mobile Money payments?", a: "Yes — Cash, MTN Mobile Money, Telecel Cash, AT Money, bank transfer and card are all supported, with a breakdown of how customers pay you." },
   { q: "What happens to my notebook records?", a: "You can start fresh today and add products gradually. Most shopkeepers move their top 20 products in the first week and keep going from there." },
   { q: "Is my business data safe?", a: "Your records belong to you. They're encrypted, backed up daily, and never sold or shared. You can export everything to CSV at any time." },
@@ -623,7 +623,7 @@ function CTABand({ go }: { go: (to: string) => void }) {
           <div className="relative px-8 py-14 sm:px-14 text-center">
             <BadgePercent className="size-8 text-gold mx-auto" />
             <h2 className="font-display font-extrabold text-3xl sm:text-5xl mt-4 leading-tight">Know your numbers.<br />Grow your business.</h2>
-            <p className="text-white/70 mt-4 max-w-md mx-auto">Join thousands of Ghanaian shopkeepers who swapped the notebook for KasaBiz.</p>
+            <p className="text-white/70 mt-4 max-w-md mx-auto">Join thousands of Ghanaian shopkeepers who swapped the notebook for Sika Boafo.</p>
             <div className="mt-8 flex flex-wrap justify-center gap-3">
               <Button size="lg" variant="gold" onClick={() => go("/register")}>Start Free Today <ArrowRight className="size-4" /></Button>
               <Button size="lg" variant="secondary" className="!bg-transparent !text-white !border-white/30 hover:!bg-white/10" onClick={() => go("/login")}>I have an account</Button>

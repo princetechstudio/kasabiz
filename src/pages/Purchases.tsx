@@ -54,7 +54,7 @@ export default function Purchases() {
       <Card className="overflow-hidden">
         {data.purchases.length === 0 ? (
           <EmptyState icon={<ArrowLeftRight className="size-6" />} title="No purchases yet"
-            desc="Record a restock order and KasaBiz will add the items to your inventory." />
+            desc="Record a restock order and Sika Boafo will add the items to your inventory." />
         ) : (
           <div className="tbl-wrap">
             <table className="tbl !min-w-[820px]">

@@ -107,7 +107,7 @@ export function ReceiptModal({ sale, onClose }: { sale: Sale; onClose: () => voi
       }>
       <div className="mx-auto max-w-sm rounded-xl border-2 border-dashed border-line2 bg-card2 p-5 font-mono text-[13px] text-ink">
         <div className="text-center">
-          <p className="font-display font-extrabold text-lg tracking-tight">KasaBiz</p>
+          <p className="font-display font-extrabold text-lg tracking-tight">Sika Boafo</p>
           <p className="font-bold mt-1">{biz.name}</p>
           <p className="text-sub text-[11px] mt-0.5">{biz.location}</p>
           <p className="text-sub text-[11px]">Tel: {biz.phone}</p>
@@ -145,7 +145,7 @@ export function ReceiptModal({ sale, onClose }: { sale: Sale; onClose: () => voi
         <div aria-hidden className="border-t border-dashed border-line2 my-3" />
         <p className="text-center text-[11px] text-sub">Served by {sale.cashier}</p>
         <p className="text-center font-bold mt-1">Medaase! Thank you for your business.</p>
-        <p className="text-center text-[10px] text-faint mt-2">Powered by KasaBiz · kasabiz.app</p>
+        <p className="text-center text-[10px] text-faint mt-2">Powered by Sika Boafo</p>
       </div>
     </Modal>
   );

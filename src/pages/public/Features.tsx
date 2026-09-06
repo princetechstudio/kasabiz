@@ -16,7 +16,7 @@ export default function Features() {
           <div className="relative z-10 max-w-3xl animate-fade-up">
             <p className="text-sm font-bold uppercase tracking-[0.14em] text-gold flex items-center gap-2"><Sparkles className="size-4" /> One calm workspace</p>
             <h1 className="font-display font-extrabold text-4xl sm:text-6xl leading-[1.05] mt-4">Every part of your business, working together.</h1>
-            <p className="text-white/70 text-lg leading-relaxed mt-5 max-w-2xl">Stop stitching together notebooks, calculators and WhatsApp messages. KasaBiz gives you one clear view of sales, stock, money and customers.</p>
+            <p className="text-white/70 text-lg leading-relaxed mt-5 max-w-2xl">Stop stitching together notebooks, calculators and WhatsApp messages. Sika Boafo gives you one clear view of sales, stock, money and customers.</p>
           </div>
         </div>
       </section>

@@ -20,13 +20,10 @@ import { useClickOutside } from "../../lib/hooks";
 export function Logo({ dark, small }: { dark?: boolean; small?: boolean }) {
   return (
     <span className="inline-flex items-center gap-2.5 select-none">
-      <span className={cx("grid place-items-center rounded-lg font-display font-extrabold",
-        small ? "size-8 text-sm" : "size-9 text-base", dark ? "bg-gold text-navy" : "bg-navy text-gold")}>
-        K
-      </span>
+      <img src="/logo.png" alt="" className={cx("rounded-lg object-contain", small ? "size-8" : "size-9")} />
       {!small && (
         <span className={cx("font-display font-extrabold text-lg tracking-tight", dark ? "text-white" : "text-ink")}>
-          Kasa<span className={dark ? "text-gold" : "text-brand"}>Biz</span>
+          Sika <span className={dark ? "text-gold" : "text-brand"}>Boafo</span>
         </span>
       )}
     </span>
@@ -197,7 +194,7 @@ export default function AppShell() {
   const debtors = useMemo(() => getDebtors(data), [data]);
   const overdue = debtors.filter((d) => d.status === "Overdue");
   const alerts = lowStock.length + overdue.length;
-  const title = TITLES[loc.pathname] ?? "KasaBiz";
+  const title = TITLES[loc.pathname] ?? "Sika Boafo";
 
   const session = authService.getSession();
   const userName = session?.user.name ?? "Prince";

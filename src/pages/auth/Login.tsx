@@ -107,7 +107,7 @@ export default function Login() {
       </Button>
 
       <p className="text-center text-sm text-sub mt-6">
-        New to KasaBiz?{" "}
+        New to Sika Boafo?{" "}
         <Link to="/register" className="font-bold text-brand hover:text-brand-deep underline underline-offset-4">Create a free account</Link>
       </p>
 
