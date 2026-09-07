@@ -2,7 +2,7 @@
 import React, { Suspense, useCallback, useMemo, useState } from "react";
 import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import {
-  AlertTriangle, ArrowLeftRight, Bell, Boxes, ChevronLeft, CreditCard, FileText,
+  AlertTriangle, ArrowLeftRight, Bell, Boxes, CreditCard, FileText,
   LayoutDashboard, LogOut, Menu, PackagePlus, PanelLeftClose, PanelLeftOpen,
   Receipt, ScrollText, Settings, ShieldCheck, ShoppingCart, Store, UserRound,
   Users, Wallet, X, Zap, CheckCircle2, Info, XCircle,
@@ -131,21 +131,10 @@ function SidebarContent({ collapsed, onNavigate, onToggle }: {
 
       {!collapsed && (
         <div className="p-3 space-y-3">
-          {data.plan === "Free" ? (
-            <div className="rounded-xl bg-white/6 border border-white/10 p-3.5">
-              <p className="flex items-center gap-2 text-[13px] font-bold text-white">
-                <ShieldCheck className="size-4 text-gold" /> Free plan
-              </p>
-              <p className="text-xs text-white/55 mt-1 leading-relaxed">Unlock reports, staff roles & more.</p>
-              <NavLink to="/pricing" className="mt-2.5 inline-flex items-center gap-1 text-xs font-bold text-gold hover:text-white transition">
-                Upgrade to Pro <ChevronLeft className="size-3.5 rotate-180" />
-              </NavLink>
-            </div>
-          ) : (
-            <div className="rounded-xl bg-gold/15 border border-gold/25 p-3.5">
-              <p className="flex items-center gap-2 text-[13px] font-bold text-gold"><ShieldCheck className="size-4" /> {data.plan} plan</p>
-            </div>
-          )}
+          <div className="rounded-xl bg-gold/15 border border-gold/25 p-3.5">
+            <p className="flex items-center gap-2 text-[13px] font-bold text-gold"><ShieldCheck className="size-4" /> Business plan</p>
+            <p className="text-xs text-white/55 mt-1">GH₵30 first month, then GH₵60/month.</p>
+          </div>
           <KenteBar className="opacity-80" />
         </div>
       )}
@@ -179,7 +168,7 @@ export function ToastHost() {
 /* ---------------------------------- shell ---------------------------------- */
 
 export default function AppShell() {
-  const { data, dispatch, toast } = useApp();
+  const { data, dataLoading, dispatch, toast } = useApp();
   useTheme(); // keeps the document theme in sync with the saved preference
   const nav = useNavigate();
   const loc = useLocation();
@@ -199,6 +188,17 @@ export default function AppShell() {
   const session = authService.getSession();
   const userName = session?.user.name ?? "Prince";
   const bizName = data.settings.name;
+
+  if (dataLoading) {
+    return (
+      <div className="min-h-screen bg-paper grid place-items-center">
+        <div className="text-center">
+          <img src="/logo.png" alt="Sika Boafo" className="size-16 mx-auto rounded-2xl object-contain animate-pulse" />
+          <p className="text-sm text-sub mt-3">Loading your workspace...</p>
+        </div>
+      </div>
+    );
+  }
 
   React.useEffect(() => { setDrawer(false); setUserOpen(false); setBellOpen(false); }, [loc.pathname]);
 

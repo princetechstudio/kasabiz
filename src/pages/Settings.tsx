@@ -153,18 +153,13 @@ export default function Settings() {
                 <p className="text-[13px] font-bold text-faint uppercase tracking-wider">Current plan</p>
                 <p className="font-display font-extrabold text-3xl text-ink mt-1">{data.plan}</p>
               </div>
-              <Badge tone={data.plan === "Free" ? "neutral" : "gold"}>{data.plan === "Free" ? "GH₵0/month" : data.plan === "Pro" ? "GH₵25/month" : "GH₵50/month"}</Badge>
+              <Badge tone="gold">{data.plan === "Business" ? "GH₵60/month" : "Legacy plan"}</Badge>
             </div>
             <div className="mt-6 space-y-4">
               <Usage label="Products" used={data.products.length} limit={data.plan === "Free" ? 50 : 100000} free={data.plan !== "Free"} />
               <Usage label="Sales this month" used={salesThisMonth} limit={data.plan === "Free" ? 200 : 100000} free={data.plan !== "Free"} />
               <Usage label="Staff accounts" used={data.staff.length} limit={data.plan === "Free" ? 1 : data.plan === "Pro" ? 3 : 100000} free={data.plan !== "Free"} />
             </div>
-            {data.plan !== "Free" && (
-              <Button variant="secondary" className="mt-5" onClick={() => { dispatch({ type: "PLAN_SET", plan: "Free" }); toast("Plan changed to Free.", "info"); }}>
-                Switch to Free
-              </Button>
-            )}
             <p className="text-xs text-faint mt-5 border-t border-line pt-4">
               Frontend testing mode — no payment is taken.
             </p>
@@ -172,12 +167,10 @@ export default function Settings() {
           <Card className="p-6 bg-navy !border-navy text-white">
             <Crown className="size-6 text-gold" />
             <h3 className="font-display font-extrabold text-xl mt-3">Choose your plan</h3>
-            <p className="text-sm text-white/65 mt-1">Preview the plan that fits your next stage.</p>
+            <p className="text-sm text-white/65 mt-1">Activate Business with introductory first-month pricing.</p>
             <div className="mt-5 space-y-2.5">
               {([
-                { plan: "Free" as const, price: "GH₵0/month", detail: "Core sales and stock tools" },
-                { plan: "Pro" as const, price: "GH₵25/month", detail: "Reports, exports and reminders" },
-                { plan: "Business" as const, price: "GH₵50/month", detail: "Teams, roles and branches" },
+                { plan: "Business" as const, price: "GH₵30 first month", detail: "Then GH₵60/month — all features included" },
               ]).map((option) => (
                 <button
                   key={option.plan}

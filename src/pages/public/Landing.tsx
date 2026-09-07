@@ -64,7 +64,7 @@ function Hero({ go }: { go: (to: string) => void }) {
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Button size="lg" onClick={() => go("/register")}>
-              Start Free <ArrowRight className="size-4" />
+              Start Business <ArrowRight className="size-4" />
             </Button>
             <Button size="lg" variant="secondary" onClick={() => go("#how-it-works".replace("#", "/#"))}>
               See How It Works
@@ -370,7 +370,7 @@ function DemoSection({ go }: { go: (to: string) => void }) {
               <h2 className="font-display font-extrabold text-3xl sm:text-4xl leading-tight mt-4">Your next business decision should take minutes, not guesswork.</h2>
               <p className="text-white/70 mt-4 leading-relaxed max-w-xl">Start with a free workspace or let us walk you through the dashboard using your own business workflow.</p>
               <div className="mt-7 flex flex-wrap gap-3">
-                <Button variant="gold" size="lg" onClick={() => go("/register")}>Start free <ArrowRight className="size-4" /></Button>
+                <Button variant="gold" size="lg" onClick={() => go("/register")}>Start Business <ArrowRight className="size-4" /></Button>
                 <Button variant="ghost" size="lg" className="!text-white !border-white/20 hover:!bg-white/10" onClick={() => go("/demo")}>Book a walkthrough</Button>
               </div>
             </div>
@@ -518,19 +518,17 @@ const Store2 = () => <Boxes className="size-6" />;
 
 function PricingPreview({ go }: { go: (to: string) => void }) {
   const tiers = [
-    { name: "Free", price: 0, desc: "For getting started", features: ["1 business", "Up to 50 products", "Sales & receipts", "Customer book"] },
-    { name: "Pro", price: 25, desc: "For busy shops", features: ["Unlimited products", "Reports & CSV export", "Debtor reminders", "2 staff accounts"], hot: true },
-    { name: "Business", price: 50, desc: "For teams & branches", features: ["Everything in Pro", "Unlimited staff & roles", "Multi-branch stock", "Priority support"] },
+    { name: "Business", price: 60, desc: "Everything your business needs", features: ["First month GH₵30", "Unlimited products and sales", "Unlimited staff, roles and branches", "Reports, exports and debtor reminders"], hot: true },
   ];
   return (
     <section className="py-20 lg:py-24 bg-card border-y border-line">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="text-center max-w-xl mx-auto">
           <p className="text-sm font-bold text-brand uppercase tracking-wider">Simple pricing</p>
-          <h2 className="font-display font-extrabold text-3xl sm:text-[42px] leading-tight text-ink mt-3">Start free. Upgrade when you grow.</h2>
+          <h2 className="font-display font-extrabold text-3xl sm:text-[42px] leading-tight text-ink mt-3">Everything your business needs.</h2>
           <p className="text-sub mt-3">Pay with MTN MoMo, Telecel Cash or AT Money. No hidden charges.</p>
         </div>
-        <div className="mt-12 grid md:grid-cols-3 gap-6 items-stretch max-w-5xl mx-auto">
+        <div className="mt-12 grid max-w-md mx-auto">
           {tiers.map((t, i) => (
             <div key={t.name} className={cx(
               "relative rounded-xl border p-7 flex flex-col transition-all duration-300 hover:-translate-y-1 animate-fade-up",
@@ -556,7 +554,7 @@ function PricingPreview({ go }: { go: (to: string) => void }) {
                 ))}
               </ul>
               <Button variant={t.hot ? "gold" : "secondary"} className="mt-6 w-full" onClick={() => go("/pricing")}>
-                {t.price === 0 ? "Start Free" : `Choose ${t.name}`}
+                Choose {t.name}
               </Button>
             </div>
           ))}
@@ -578,7 +576,7 @@ const FAQS = [
   { q: "What happens to my notebook records?", a: "You can start fresh today and add products gradually. Most shopkeepers move their top 20 products in the first week and keep going from there." },
   { q: "Is my business data safe?", a: "Your records belong to you. They're encrypted, backed up daily, and never sold or shared. You can export everything to CSV at any time." },
   { q: "Can my cashier use it without seeing my profit?", a: "On the Business plan you can create roles — cashiers see the till and stock, while only owners and managers see profit and reports." },
-  { q: "How do I pay for Pro or Business?", a: "With MTN MoMo, Telecel Cash or AT Money — monthly, cancel anytime. No bank account or card needed." },
+  { q: "How do I pay for Business?", a: "With MTN MoMo, Telecel Cash or AT Money — first month GH₵30, then GH₵60/month. No bank account or card needed." },
 ];
 
 export function FAQ() {
@@ -625,7 +623,7 @@ function CTABand({ go }: { go: (to: string) => void }) {
             <h2 className="font-display font-extrabold text-3xl sm:text-5xl mt-4 leading-tight">Know your numbers.<br />Grow your business.</h2>
             <p className="text-white/70 mt-4 max-w-md mx-auto">Join thousands of Ghanaian shopkeepers who swapped the notebook for Sika Boafo.</p>
             <div className="mt-8 flex flex-wrap justify-center gap-3">
-              <Button size="lg" variant="gold" onClick={() => go("/register")}>Start Free Today <ArrowRight className="size-4" /></Button>
+              <Button size="lg" variant="gold" onClick={() => go("/register")}>Start Business Today <ArrowRight className="size-4" /></Button>
               <Button size="lg" variant="secondary" className="!bg-transparent !text-white !border-white/30 hover:!bg-white/10" onClick={() => go("/login")}>I have an account</Button>
             </div>
           </div>

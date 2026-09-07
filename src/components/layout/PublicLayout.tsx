@@ -71,7 +71,7 @@ export default function PublicLayout() {
             ) : (
               <>
                 <Button variant="ghost" onClick={() => go("/login")}>Login</Button>
-                <Button onClick={() => go("/register")}>Start Free</Button>
+                <Button onClick={() => go("/register")}>Start Business</Button>
               </>
             )}
           </div>
@@ -90,7 +90,7 @@ export default function PublicLayout() {
             ))}
             <div className="flex gap-2 pt-3">
               <Button variant="secondary" className="flex-1" onClick={() => { setOpen(false); go("/login"); }}>Login</Button>
-              <Button className="flex-1" onClick={() => { setOpen(false); go("/register"); }}>Start Free</Button>
+              <Button className="flex-1" onClick={() => { setOpen(false); go("/register"); }}>Start Business</Button>
             </div>
           </div>
         )}

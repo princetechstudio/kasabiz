@@ -62,7 +62,10 @@ function NotFound() {
 
 const Fallback = () => (
   <div className="min-h-[60vh] grid place-items-center">
-    <span className="size-12 rounded-xl bg-navy text-gold grid place-items-center font-display font-extrabold text-xl animate-pulse-dot">K</span>
+    <div className="text-center">
+      <img src="/logo.png" alt="Sika Boafo" className="size-14 mx-auto rounded-2xl object-contain animate-pulse" />
+      <p className="text-sm text-sub mt-3">Loading...</p>
+    </div>
   </div>
 );
 

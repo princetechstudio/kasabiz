@@ -49,7 +49,7 @@ export default function Solutions() {
           <h1 className="font-display font-extrabold text-4xl sm:text-6xl leading-[1.05] mt-5 max-w-4xl">{solution.title}</h1>
           <p className="text-white/70 text-lg leading-relaxed mt-5 max-w-2xl">{solution.description}</p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <Link to="/register"><Button variant="gold" size="lg">Start free <ArrowRight className="size-4" /></Button></Link>
+            <Link to="/register"><Button variant="gold" size="lg">Start Business <ArrowRight className="size-4" /></Button></Link>
             <Link to="/demo"><Button variant="ghost" size="lg" className="!text-white !border-white/20 hover:!bg-white/10">Book a walkthrough</Button></Link>
           </div>
         </div>

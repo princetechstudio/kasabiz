@@ -226,6 +226,7 @@ function reducer(state: State, action: Action): State {
 
 interface Ctx {
   data: BusinessData;
+  dataLoading: boolean;
   toasts: Toast[];
   dispatch: React.Dispatch<Action>;
   toast: (message: string, tone?: Toast["tone"]) => void;
@@ -237,22 +238,29 @@ const emptyData: BusinessData = {
   products: [], customers: [], sales: [], expenses: [], purchases: [], movements: [],
   staff: [], heldSales: [], auditLogs: [], nextReceiptNo: 1,
   settings: { name: "", type: "", phone: "", location: "", region: "", currency: "GHS (GH₵)" },
-  plan: "Free",
+  plan: "Business",
 };
 
 export function AppProvider({ children }: { children: React.ReactNode }) {
   const [state, reducerDispatch] = useReducer(reducer, { data: emptyData, toasts: [] });
+  const [dataLoading, setDataLoading] = React.useState(true);
 
   useEffect(() => {
     let active = true;
     const load = async () => {
       const session = authService.getSession();
-      if (!session?.business.id) return;
+      if (active) setDataLoading(true);
+      if (!session?.business.id) {
+        if (active) setDataLoading(false);
+        return;
+      }
       try {
         const data = await loadBusinessData(session.business.id);
         if (active) reducerDispatch({ type: "DATA_LOAD", data });
       } catch (error: unknown) {
         console.error("Unable to load business data", error);
+      } finally {
+        if (active) setDataLoading(false);
       }
     };
     void load();
@@ -372,8 +380,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const value = useMemo(
-    () => ({ data: state.data, toasts: state.toasts, dispatch, toast }),
-    [state, dispatch, toast]
+    () => ({ data: state.data, dataLoading, toasts: state.toasts, dispatch, toast }),
+    [state, dataLoading, dispatch, toast]
   );
 
   return <AppCtx.Provider value={value}>{children}</AppCtx.Provider>;

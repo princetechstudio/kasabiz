@@ -472,7 +472,7 @@ export const buildSeedData = (): BusinessData => {
     auditLogs: [],
     nextReceiptNo: (sales[0]?.receiptNo ?? 1000) + 1,
     settings: { ...DEFAULT_SETTINGS },
-    plan: "Free",
+    plan: "Business",
   };
 };
 

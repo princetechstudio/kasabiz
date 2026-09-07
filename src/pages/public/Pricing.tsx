@@ -7,38 +7,29 @@ import { cx, ghs } from "../../lib/format";
 import { useAnchorNav } from "../../components/layout/PublicLayout";
 import { useApp } from "../../state/store";
 import { authService } from "../../services/authService";
+import { startPaystackCheckout } from "../../services/paystackService";
 
 const TIERS = [
   {
-    name: "Free", price: 0, yearly: 0, tag: "For getting started",
-    blurb: "Everything you need to leave the notebook behind.",
-    cta: "Start Free",
-  },
-  {
-    name: "Pro", price: 25, yearly: 250, tag: "For busy shops", hot: true,
-    blurb: "Full visibility — reports, reminders and room to grow.",
-    cta: "Upgrade to Pro",
-  },
-  {
-    name: "Business", price: 50, yearly: 500, tag: "For teams & branches",
+    name: "Business", price: 60, yearly: 720, tag: "Everything your business needs", hot: true,
     blurb: "Roles, branches and priority support for bigger operations.",
     cta: "Get Business",
   },
 ];
 
-const ROWS: Array<{ label: string; values: [React.ReactNode, React.ReactNode, React.ReactNode] }> = [
-  { label: "Businesses", values: ["1", "1", "Up to 3 branches"] },
-  { label: "Products", values: ["50", "Unlimited", "Unlimited"] },
-  { label: "Sales & digital receipts", values: [true, true, true] },
-  { label: "Customer book & debtors", values: [true, true, true] },
-  { label: "Expense tracking", values: [true, true, true] },
-  { label: "Reports & charts", values: ["Basic", true, true] },
-  { label: "CSV export", values: [false, true, true] },
-  { label: "Debtor SMS reminders", values: [false, true, true] },
-  { label: "Staff accounts", values: [false, "2", "Unlimited"] },
-  { label: "Roles & permissions", values: [false, false, true] },
-  { label: "Multi-branch stock", values: [false, false, true] },
-  { label: "Priority support", values: [false, false, true] },
+const ROWS: Array<{ label: string; value: React.ReactNode }> = [
+  { label: "Businesses", value: "Up to 3 branches" },
+  { label: "Products", value: "Unlimited" },
+  { label: "Sales & digital receipts", value: true },
+  { label: "Customer book & debtors", value: true },
+  { label: "Expense tracking", value: true },
+  { label: "Reports & charts", value: true },
+  { label: "CSV export", value: true },
+  { label: "Debtor SMS reminders", value: true },
+  { label: "Staff accounts", value: "Unlimited" },
+  { label: "Roles & permissions", value: true },
+  { label: "Multi-branch stock", value: true },
+  { label: "Priority support", value: true },
 ];
 
 export default function Pricing() {
@@ -49,15 +40,34 @@ export default function Pricing() {
   const [yearly, setYearly] = React.useState(false);
   const [selectedTier, setSelectedTier] = React.useState<typeof TIERS[number] | null>(null);
 
-  const continueWithTier = (tier: typeof TIERS[number]) => {
+  const [paying, setPaying] = React.useState(false);
+
+  const continueWithTier = async (tier: typeof TIERS[number]) => {
     if (!signedIn) {
       go("/register");
       return;
     }
-    dispatch({ type: "PLAN_SET", plan: tier.name as "Free" | "Pro" | "Business" });
-    toast(`${tier.name} plan activated for frontend testing.`, "success");
-    setSelectedTier(null);
-    nav("/settings", { state: { tab: "subscription" } });
+    const session = authService.getSession();
+    if (!session) {
+      go("/login");
+      return;
+    }
+    setPaying(true);
+    try {
+      await startPaystackCheckout({
+        email: session.user.email,
+        businessId: session.business.id,
+        yearly,
+      });
+      dispatch({ type: "PLAN_SET", plan: "Business" });
+      toast(`${tier.name} payment successful. Welcome to Sika Boafo Business.`, "success");
+      setSelectedTier(null);
+      nav("/settings", { state: { tab: "subscription" } });
+    } catch (error) {
+      toast(error instanceof Error ? error.message : "Payment could not be completed.", "error");
+    } finally {
+      setPaying(false);
+    }
   };
 
   return (
@@ -74,7 +84,7 @@ export default function Pricing() {
             Pay monthly or yearly with MTN MoMo, Telecel Cash or AT Money. Cancel anytime — no penalties, no small print.
           </p>
           <div className="mt-7 inline-flex items-center gap-3 rounded-full border border-line bg-card p-1">
-            {(["Monthly", "Yearly (2 months free)"] as const).map((opt, i) => {
+            {(["Monthly", "Yearly"] as const).map((opt, i) => {
               const on = (i === 1) === yearly;
               return (
                 <button key={opt} onClick={() => setYearly(i === 1)}
@@ -86,19 +96,7 @@ export default function Pricing() {
           </div>
         </div>
 
-        <div className="mt-10 max-w-5xl mx-auto grid sm:grid-cols-2 gap-4">
-          {[
-            { title: "Starter path", text: "Begin with Free, then move to Pro when your product list and daily sales outgrow the basics.", tone: "bg-brand-soft border-brand/10" },
-            { title: "Growth path", text: "Choose Business when you add staff, roles or branches and need everyone working from the same numbers.", tone: "bg-gold-soft border-gold/20" },
-          ].map((path) => (
-            <div key={path.title} className={cx("rounded-xl border p-4 text-left", path.tone)}>
-              <p className="font-display font-bold text-ink">{path.title}</p>
-              <p className="text-xs text-sub mt-1 leading-relaxed">{path.text}</p>
-            </div>
-          ))}
-        </div>
-
-        <div className="mt-14 grid lg:grid-cols-3 gap-6 items-stretch max-w-6xl mx-auto">
+        <div className="mt-14 grid max-w-md mx-auto">
           {TIERS.map((t, i) => {
             const price = yearly ? t.yearly : t.price;
             return (
@@ -119,16 +117,17 @@ export default function Pricing() {
                   <span className={cx("font-display font-extrabold text-5xl tnum", t.hot ? "text-gold" : "text-ink")}>{ghs(price)}</span>
                   <span className={cx("text-sm font-semibold", t.hot ? "text-white/60" : "text-sub")}>/{yearly ? "year" : "month"}</span>
                 </div>
+                {!yearly && <p className="text-xs text-gold mt-1">First month GH₵30</p>}
                 <ul className={cx("mt-6 space-y-3 flex-1 text-sm", t.hot ? "text-white/85" : "text-sub")}>
-                  {ROWS.slice(0, 8).filter((r) => r.values[i] !== false).map((r) => (
+                  {ROWS.slice(0, 8).map((r) => (
                     <li key={r.label} className="flex items-start gap-2.5">
                       <Check className={cx("size-4 mt-0.5 shrink-0", t.hot ? "text-gold" : "text-ok")} />
-                      <span>{r.label}{typeof r.values[i] === "string" && <b className={t.hot ? "text-white" : "text-ink"}> — {r.values[i]}</b>}</span>
+                      <span>{r.label}{typeof r.value === "string" && <b className="text-white"> — {r.value}</b>}</span>
                     </li>
                   ))}
                 </ul>
-                <Button variant={t.hot ? "gold" : t.name === "Free" ? "secondary" : "primary"} size="lg" className="mt-8 w-full"
-                  onClick={() => t.name === "Free" && !signedIn ? go("/register") : setSelectedTier(t)}>
+                <Button variant="gold" size="lg" className="mt-8 w-full"
+                  onClick={() => setSelectedTier(t)}>
                   {signedIn && data.plan === t.name ? "Current plan" : t.cta} <ArrowRight className="size-4" />
                 </Button>
               </div>
@@ -154,13 +153,10 @@ export default function Pricing() {
                   {ROWS.map((r) => (
                     <tr key={r.label}>
                       <td className="font-semibold text-ink">{r.label}</td>
-                      {r.values.map((v, i) => (
-                        <td key={i} className="text-center">
-                          {v === true ? <Check className="size-4 text-ok inline" />
-                            : v === false ? <Minus className="size-4 text-line2 inline" />
-                              : <span className="text-[13px] font-bold text-ink">{v}</span>}
-                        </td>
-                      ))}
+                      <td className="text-center">
+                        {r.value === true ? <Check className="size-4 text-ok inline" />
+                          : <span className="text-[13px] font-bold text-ink">{r.value}</span>}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -172,9 +168,9 @@ export default function Pricing() {
         {/* reassurance */}
         <div className="mt-16 grid sm:grid-cols-3 gap-5 max-w-4xl mx-auto">
           {[
+            { t: "Introductory pricing", d: "Start with your first month at GH₵30, then continue at GH₵60/month." },
             { t: "MoMo-first billing", d: "Pay with the wallet you already use. We prompt you — no card forms." },
-            { t: "Cancel anytime", d: "Downgrade back to Free in one tap. Your data stays yours, always exportable." },
-            { t: "Free onboarding", d: "Our Accra team will help you set up your first 50 products on any paid plan." },
+            { t: "Free onboarding", d: "Our Accra team will help you set up your business and products." },
           ].map((x) => (
             <div key={x.t} className="rounded-xl border border-line bg-card p-5 text-center hover:-translate-y-0.5 hover:shadow-lift transition-all">
               <p className="font-display font-bold text-ink">{x.t}</p>
@@ -197,7 +193,7 @@ export default function Pricing() {
           selectedTier && (
             <>
               <Button variant="secondary" onClick={() => setSelectedTier(null)}>Maybe later</Button>
-              <Button variant={selectedTier.hot ? "gold" : "primary"} onClick={() => continueWithTier(selectedTier)}>
+              <Button variant={selectedTier.hot ? "gold" : "primary"} loading={paying} onClick={() => void continueWithTier(selectedTier)}>
                 {signedIn ? `Choose ${selectedTier.name}` : "Continue to account"} <ArrowRight className="size-4" />
               </Button>
             </>
@@ -217,15 +213,15 @@ export default function Pricing() {
             <div>
               <p className="font-display font-bold text-ink">Everything included</p>
               <ul className="mt-3 grid gap-2.5 sm:grid-cols-2">
-                {ROWS.map((row) => row.values[TIERS.indexOf(selectedTier)] !== false && (
+                {ROWS.map((row) => (
                   <li key={row.label} className="flex items-start gap-2 text-sm text-sub">
                     <Check className="size-4 mt-0.5 text-ok shrink-0" />
-                    <span>{row.label}{typeof row.values[TIERS.indexOf(selectedTier)] === "string" && ` — ${row.values[TIERS.indexOf(selectedTier)]}`}</span>
+                    <span>{row.label}{typeof row.value === "string" && ` — ${row.value}`}</span>
                   </li>
                 ))}
               </ul>
             </div>
-            <p className="text-xs text-faint border-t border-line pt-4">Frontend testing mode — no payment is taken.</p>
+            <p className="text-xs text-faint border-t border-line pt-4">Secure checkout powered by Paystack. Your plan activates after payment confirmation.</p>
           </div>
         )}
       </Modal>

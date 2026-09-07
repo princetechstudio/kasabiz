@@ -23,7 +23,7 @@ export default function Features() {
       <FeatureSection />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-14 flex flex-wrap items-center justify-between gap-5">
         <p className="font-display font-bold text-xl text-ink">Ready to see the difference?</p>
-        <Link to="/register"><Button size="lg">Start free <ArrowRight className="size-4" /></Button></Link>
+        <Link to="/register"><Button size="lg">Start Business <ArrowRight className="size-4" /></Button></Link>
       </div>
     </div>
   );
