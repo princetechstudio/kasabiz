@@ -132,8 +132,8 @@ export default function PublicLayout() {
           <div>
             <p className="text-sm font-bold text-white mb-4">Get in touch</p>
             <ul className="space-y-3 text-sm text-white/65">
-              <li className="flex items-center gap-2.5"><MapPin className="size-4 text-gold shrink-0" /> 14 Oxford Street, Osu — Accra</li>
-              <li className="flex items-center gap-2.5"><Phone className="size-4 text-gold shrink-0" /> 030 274 8899</li>
+              <li className="flex items-center gap-2.5"><MapPin className="size-4 text-gold shrink-0" /> Amasaman</li>
+              <li className="flex items-center gap-2.5"><Phone className="size-4 text-gold shrink-0" /> 0552380231 · 0240871412</li>
               <li className="flex items-center gap-2.5"><Mail className="size-4 text-gold shrink-0" /> hello@kasabiz.app</li>
             </ul>
             <p className="mt-5 text-xs text-white/45">Pay with MTN MoMo, Telecel Cash or AT Money.</p>
