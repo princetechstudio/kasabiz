@@ -1,7 +1,7 @@
 /** Shared split-screen frame for Login / Register. */
 import React from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Quote, TrendingUp, Users, Zap } from "lucide-react";
+import { ArrowLeft, CheckCircle2, TrendingUp, Users, Zap } from "lucide-react";
 import { KenteBar } from "../../components/ui";
 import { Logo } from "../../components/layout/AppShell";
 
@@ -14,7 +14,7 @@ export default function AuthFrame({ children }: { children: React.ReactNode }) {
         <div aria-hidden className="absolute -bottom-32 -left-20 size-96 rounded-full bg-gold/12 blur-3xl" />
         <div className="relative">
           <Link to="/" className="inline-flex items-center gap-2 text-white/70 hover:text-white text-sm font-semibold transition">
-            <ArrowLeft className="size-4" /> Back to kasabiz.app
+            <ArrowLeft className="size-4" /> Back to Sika Boafo
           </Link>
           <div className="mt-10"><Logo dark /></div>
           <h2 className="font-display font-extrabold text-[34px] leading-tight mt-8 max-w-md">
@@ -33,13 +33,9 @@ export default function AuthFrame({ children }: { children: React.ReactNode }) {
           </div>
         </div>
         <div className="relative">
-          <figure className="rounded-xl bg-white/6 border border-white/10 p-5 max-w-md">
-            <Quote className="size-5 text-gold" />
-            <blockquote className="text-[15px] leading-relaxed text-white/85 mt-2">
-              “Before Sika Boafo I knew my cash, not my profit. Now I know exactly what each day brought — even the days I wasn't at the shop.”
-            </blockquote>
-            <figcaption className="mt-3 text-sm font-bold text-gold">Prince Ankomah · Prince Fashion Store, Osu</figcaption>
-          </figure>
+          <div className="rounded-xl bg-white/6 border border-white/10 p-5 max-w-md">
+            <p className="flex items-center gap-2 text-sm font-semibold text-white/85"><CheckCircle2 className="size-4 text-gold" /> Your business data stays in your secure workspace.</p>
+          </div>
           <KenteBar className="mt-8 opacity-90" />
         </div>
       </aside>

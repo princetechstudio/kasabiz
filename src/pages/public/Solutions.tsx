@@ -50,7 +50,7 @@ export default function Solutions() {
           <p className="text-white/70 text-lg leading-relaxed mt-5 max-w-2xl">{solution.description}</p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Link to="/register"><Button variant="gold" size="lg">Start Business <ArrowRight className="size-4" /></Button></Link>
-            <Link to="/demo"><Button variant="ghost" size="lg" className="!text-white !border-white/20 hover:!bg-white/10">Book a walkthrough</Button></Link>
+            <Link to="/register"><Button variant="ghost" size="lg" className="!text-white !border-white/20 hover:!bg-white/10">Create your workspace</Button></Link>
           </div>
         </div>
       </section>

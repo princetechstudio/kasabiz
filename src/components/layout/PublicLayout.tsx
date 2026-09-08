@@ -127,8 +127,8 @@ export default function PublicLayout() {
           </div>
           <FooterCol title="Product" items={[["Features", "/features"], ["How it Works", "/how-it-works"], ["Solutions", "/solutions/retail"], ["Pricing", "/pricing"], ["FAQ", "/faq"]]} />
           <FooterCol title="Solutions" items={[["Retail shops", "/solutions/retail"], ["Food vendors", "/solutions/food"], ["Salons & beauty", "/solutions/salon"], ["Growing businesses", "/solutions/sme"]]} />
-          <FooterCol title="Resources" items={[["Customer stories", "/stories"], ["Book a walkthrough", "/demo"], ["Start free", "/register"], ["Open dashboard", "/dashboard"]]} />
-          <FooterCol title="Account" items={[["Login", "/login"], ["Create account", "/register"], ["Admin demo", "/admin"], ["Dashboard", "/dashboard"]]} />
+          <FooterCol title="Resources" items={[["Customer stories", "/stories"], ["Start free", "/register"], ["Open dashboard", "/dashboard"]]} />
+          <FooterCol title="Account" items={[["Login", "/login"], ["Create account", "/register"], ["Dashboard", "/dashboard"]]} />
           <div>
             <p className="text-sm font-bold text-white mb-4">Get in touch</p>
             <ul className="space-y-3 text-sm text-white/65">
@@ -146,7 +146,7 @@ export default function PublicLayout() {
         </div>
         <div className="border-t border-white/10">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-white/45">
-            <p>© {new Date().getFullYear()} Sika Boafo. Frontend demo — no real payments or data.</p>
+            <p>© {new Date().getFullYear()} Sika Boafo. Built for Ghanaian businesses.</p>
             <div className="flex items-center gap-3"><button onClick={() => go("/privacy")} className="hover:text-gold transition">Privacy</button><button onClick={() => go("/terms")} className="hover:text-gold transition">Terms</button><span>Akwaaba! 🇬🇭 made with care in Accra</span></div>
           </div>
         </div>

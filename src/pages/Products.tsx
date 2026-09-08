@@ -174,9 +174,15 @@ export default function Products() {
             <Input value={form.sku} invalid={!!errors.sku} placeholder="PF-TSH-001" onChange={(e) => setForm((f) => ({ ...f, sku: e.target.value }))} />
           </Field>
           <Field label="Category">
-            <Select value={form.category} onChange={(e) => setForm((f) => ({ ...f, category: e.target.value }))}>
-              {PRODUCT_CATEGORIES.map((c) => <option key={c}>{c}</option>)}
-            </Select>
+            <Input
+              value={form.category}
+              list="product-category-options"
+              placeholder="e.g. Accessories"
+              onChange={(e) => setForm((f) => ({ ...f, category: e.target.value }))}
+            />
+            <datalist id="product-category-options">
+              {PRODUCT_CATEGORIES.map((c) => <option key={c} value={c} />)}
+            </datalist>
           </Field>
           <Field label="Selling price (GH₵)" error={errors.price}>
             <Input type="number" min="0" step="0.01" value={form.price} invalid={!!errors.price} placeholder="200" onChange={(e) => setForm((f) => ({ ...f, price: e.target.value }))} />

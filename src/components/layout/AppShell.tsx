@@ -20,9 +20,9 @@ import { useClickOutside } from "../../lib/hooks";
 export function Logo({ dark, small }: { dark?: boolean; small?: boolean }) {
   return (
     <span className="inline-flex items-center gap-2.5 select-none">
-      <img src="/logo.png" alt="" className={cx("rounded-lg object-contain", small ? "size-8" : "size-9")} />
+      <img src="/logo.png" alt="" className={cx("rounded-lg object-contain", small ? "size-9" : "size-11")} />
       {!small && (
-        <span className={cx("font-display font-extrabold text-lg tracking-tight", dark ? "text-white" : "text-ink")}>
+        <span className={cx("font-display font-extrabold text-xl tracking-tight", dark ? "text-white" : "text-ink")}>
           Sika <span className={dark ? "text-gold" : "text-brand"}>Boafo</span>
         </span>
       )}
@@ -189,6 +189,8 @@ export default function AppShell() {
   const userName = session?.user.name ?? "Prince";
   const bizName = data.settings.name;
 
+  React.useEffect(() => { setDrawer(false); setUserOpen(false); setBellOpen(false); }, [loc.pathname]);
+
   if (dataLoading) {
     return (
       <div className="min-h-screen bg-paper grid place-items-center">
@@ -199,8 +201,6 @@ export default function AppShell() {
       </div>
     );
   }
-
-  React.useEffect(() => { setDrawer(false); setUserOpen(false); setBellOpen(false); }, [loc.pathname]);
 
   const logout = async () => {
     await authService.logout();
@@ -217,7 +217,7 @@ export default function AppShell() {
   ];
 
   return (
-    <div className="min-h-screen bg-paper">
+    <div className="min-h-screen min-w-0 overflow-x-hidden bg-paper">
       {/* desktop / tablet sidebar */}
       <aside className={cx(
         "hidden md:flex fixed inset-y-0 left-0 z-40 bg-navy transition-[width] duration-200 flex-col",
@@ -247,7 +247,7 @@ export default function AppShell() {
       )}
 
       {/* main column */}
-      <div className={cx("transition-[padding] duration-200", collapsed ? "md:pl-[68px]" : "md:pl-60")}>
+      <div className={cx("min-w-0 transition-[padding] duration-200", collapsed ? "md:pl-[68px]" : "md:pl-60")}>
         {/* topbar */}
         <header className="sticky top-0 z-30 h-16 border-b border-line bg-card/90 backdrop-blur flex items-center gap-3 px-4 sm:px-6">
           <button onClick={() => setDrawer(true)} aria-label="Open menu"
@@ -318,7 +318,6 @@ export default function AppShell() {
                   </div>
                   <div className="p-1.5">
                     <button onClick={() => nav("/settings")} className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-ink hover:bg-card2 transition"><Settings className="size-4 text-sub" /> Settings</button>
-                    <button onClick={() => nav("/admin")} className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-ink hover:bg-card2 transition"><ShieldCheck className="size-4 text-sub" /> Admin demo</button>
                     <button onClick={logout} className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-danger hover:bg-danger-soft transition"><LogOut className="size-4" /> Sign out</button>
                   </div>
                 </div>
@@ -328,7 +327,7 @@ export default function AppShell() {
         </header>
 
         {/* page */}
-        <main className="px-4 sm:px-6 py-6 pb-28 lg:pb-10 max-w-[1400px] mx-auto" key={loc.pathname}>
+        <main className="min-w-0 px-4 sm:px-6 py-6 pb-28 lg:pb-10 max-w-[1400px] mx-auto" key={loc.pathname}>
           <Suspense fallback={<PageLoader />}>
             <Outlet />
           </Suspense>

@@ -209,7 +209,7 @@ export default function NewSale() {
       {cartOpen && (
         <div className="lg:hidden fixed inset-0 z-50">
           <div className="absolute inset-0 bg-navy2/60 animate-fade-in" onClick={() => setCartOpen(false)} />
-          <div className="absolute inset-x-0 bottom-0 max-h-[88vh] overflow-y-auto rounded-t-2xl bg-paper p-3 pb-6 animate-slide-up">
+          <div className="absolute inset-x-0 bottom-0 flex max-h-[88dvh] flex-col overflow-hidden rounded-t-2xl bg-paper p-3 pb-6 animate-slide-up">
             <div className="mx-auto w-10 h-1 rounded-full bg-line2 mb-3" />
             <CartPanel
               cart={cart} setQty={setQty} customers={data.customers} customerId={customerId}
@@ -218,7 +218,7 @@ export default function NewSale() {
               dueDate={dueDate} setDueDate={setDueDate} received={received} setReceived={setReceived}
               subtotal={subtotal} discountVal={discountVal} total={total} change={change}
               itemCount={itemCount} clear={clear} hold={hold} complete={complete}
-              completing={completing} onClose={() => setCartOpen(false)}
+              completing={completing} onClose={() => setCartOpen(false)} className="min-h-0 max-h-none flex-1"
             />
           </div>
         </div>
@@ -283,7 +283,7 @@ function CartPanel(props: {
   } = props;
 
   return (
-    <Card className={cx("overflow-hidden flex flex-col max-h-[calc(100vh-110px)]", className)}>
+    <Card className={cx("min-h-0 overflow-hidden flex flex-col max-h-[calc(100dvh-110px)]", className)}>
       <div className="flex items-center gap-2.5 px-4 h-13 py-3.5 border-b border-line bg-navy text-white rounded-t-xl">
         <ShoppingCart className="size-4 text-gold" />
         <p className="font-display font-bold text-[15px]">Current Cart</p>
@@ -294,7 +294,7 @@ function CartPanel(props: {
       </div>
 
       {/* items */}
-      <div className="flex-1 overflow-y-auto px-4 py-3 space-y-2.5 min-h-[80px]">
+      <div className="min-h-[80px] min-w-0 flex-1 overflow-y-auto overscroll-contain touch-pan-y px-4 py-3 space-y-2.5">
         {cart.length === 0 && (
           <div className="text-center py-8">
             <Wallet className="size-7 text-faint mx-auto" />

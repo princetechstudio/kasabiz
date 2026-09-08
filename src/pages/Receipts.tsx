@@ -105,7 +105,7 @@ export function ReceiptModal({ sale, onClose }: { sale: Sale; onClose: () => voi
           <Button onClick={() => window.print()}><Printer className="size-4" /> Print</Button>
         </>
       }>
-      <div className="mx-auto max-w-sm rounded-xl border-2 border-dashed border-line2 bg-card2 p-5 font-mono text-[13px] text-ink">
+      <div className="receipt-paper mx-auto max-w-sm rounded-xl border-2 border-dashed border-line2 bg-card2 p-5 font-mono text-[13px] text-ink">
         <div className="text-center">
           <p className="font-display font-extrabold text-lg tracking-tight">Sika Boafo</p>
           <p className="font-bold mt-1">{biz.name}</p>

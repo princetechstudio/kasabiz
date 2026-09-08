@@ -1,9 +1,4 @@
-/**
- * Centralized mock data for the KasaBiz frontend demo.
- * Everything is generated deterministically so the demo looks identical
- * on every fresh load. A real backend (e.g. Supabase) will replace this
- * module — the shapes below mirror what API responses would look like.
- */
+/** Shared application types, reference lists, and formatting helpers. */
 import { daysAgoISO } from "../lib/format";
 
 /* --------------------------------- types --------------------------------- */
@@ -202,12 +197,12 @@ const rnd = mulberry32(20260214);
 const pick = <T,>(arr: T[]) => arr[Math.floor(rnd() * arr.length)];
 const ri = (min: number, max: number) => Math.floor(rnd() * (max - min + 1)) + min;
 
-/* ------------------------------ demo business ----------------------------- */
+/* --------------------------- legacy fixture helpers ----------------------- */
 
-export const DEMO_USER = { name: "Prince Ankomah", email: "prince@kasabiz.demo", phone: "024 555 0182" };
+export const SAMPLE_USER = { name: "", email: "", phone: "" };
 
 export const DEFAULT_SETTINGS: BusinessSettings = {
-  name: "Prince Fashion Store",
+  name: "",
   type: "Retail",
   phone: "024 555 0182",
   location: "Oxford Street, Osu — Accra",
@@ -434,7 +429,7 @@ export const seedMovements = (products: Product[]): Movement[] => {
 /* ---------------------------------- staff --------------------------------- */
 
 export const seedStaff = (): StaffMember[] => [
-  { id: "st1", name: "Prince Ankomah", email: "prince@kasabiz.demo", role: "Owner", status: "Active", lastActive: daysAgoISO(0, 12) },
+  { id: "st1", name: "Prince Ankomah", email: "prince@kasabiz.app", role: "Owner", status: "Active", lastActive: daysAgoISO(0, 12) },
   { id: "st2", name: "Abena Serwaa", email: "abena.s@gmail.com", role: "Manager", status: "Active", lastActive: daysAgoISO(0, 9) },
   { id: "st3", name: "Kojo Antwi", email: "kojo.antwi@gmail.com", role: "Cashier", status: "Active", lastActive: daysAgoISO(0, 11) },
   { id: "st4", name: "Linda Mensah", email: "linda.m@outlook.com", role: "Staff", status: "Invited", lastActive: daysAgoISO(4, 16) },

@@ -1,5 +1,5 @@
 /** KasaBiz landing page. */
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import {
   AlertTriangle, ArrowRight, BadgePercent, BarChart3, Boxes, Calculator,
@@ -9,11 +9,8 @@ import {
   Sparkles, Store, Utensils, Scissors,
 } from "lucide-react";
 import { Badge, Button, Card, KenteBar, Progress } from "../../components/ui";
-import { AreaMoney, BarsMoney, CHART, Donut } from "../../components/charts";
 import { useAnchorNav } from "../../components/layout/PublicLayout";
-import { buildSeedData } from "../../data/mockData";
-import { dailySeries, getLowStock } from "../../services/dataService";
-import { cx, ghs, METHOD_META } from "../../lib/format";
+import { cx, ghs } from "../../lib/format";
 
 export default function Landing() {
   const go = useAnchorNav();
@@ -23,10 +20,11 @@ export default function Landing() {
       <TrustedStrip />
       <TrustStats />
       <ProblemSection />
+      <HowItWorks />
       <SolutionsSection go={go} />
       <PricingPreview go={go} />
       <ProofSection />
-      <DemoSection go={go} />
+      <SnapshotSection go={go} />
       <CTABand go={go} />
     </>
   );
@@ -66,7 +64,7 @@ function Hero({ go }: { go: (to: string) => void }) {
             <Button size="lg" onClick={() => go("/register")}>
               Start Business <ArrowRight className="size-4" />
             </Button>
-            <Button size="lg" variant="secondary" onClick={() => go("#how-it-works".replace("#", "/#"))}>
+            <Button size="lg" variant="secondary" onClick={() => go("/#how-it-works")}>
               See How It Works
             </Button>
           </div>
@@ -83,69 +81,43 @@ function Hero({ go }: { go: (to: string) => void }) {
   );
 }
 
-/** A live, data-driven mockup of the KasaBiz dashboard. */
+/** Product overview showing the core workspace capabilities. */
 function HeroMock() {
-  const data = useMemo(() => buildSeedData(), []);
-  const series = useMemo(() => dailySeries(data, 14), [data]);
-  const low = useMemo(() => getLowStock(data.products).slice(0, 3), [data]);
-  const latest = data.sales.slice(0, 3);
-
   return (
     <div className="relative animate-fade-up" style={{ animationDelay: "120ms" }}>
       <div aria-hidden className="absolute -inset-6 bg-navy rounded-[28px] rotate-2 opacity-[0.06]" />
       <Card className="relative overflow-hidden shadow-pop">
-        {/* mock window bar */}
         <div className="flex items-center gap-2 px-4 h-10 border-b border-line bg-card2">
           <span className="size-2.5 rounded-full bg-danger/70" /><span className="size-2.5 rounded-full bg-gold/80" /><span className="size-2.5 rounded-full bg-ok/70" />
-          <span className="ml-3 text-[11px] font-semibold text-faint font-mono">app.kasabiz.app/dashboard</span>
-          <Badge tone="ok" dot className="ml-auto">Live demo</Badge>
+          <span className="ml-3 text-[11px] font-semibold text-faint font-mono">Your business workspace</span>
+          <Badge tone="ok" dot className="ml-auto">Ready when you are</Badge>
         </div>
         <div className="p-4 sm:p-5">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-[11px] font-bold uppercase tracking-wider text-faint">Prince Fashion Store</p>
-              <p className="font-display font-extrabold text-xl text-ink">Today · {ghs(1250)}</p>
+              <p className="text-[11px] font-bold uppercase tracking-wider text-faint">Business overview</p>
+              <p className="font-display font-extrabold text-xl text-ink">Everything in one place</p>
             </div>
             <span className="grid place-items-center size-9 rounded-lg bg-navy text-gold"><Zap className="size-4" /></span>
           </div>
 
           <div className="grid grid-cols-3 gap-2.5 mt-4">
             {[
-              { l: "Sales", v: ghs(1250), tone: "text-brand", bg: "bg-brand-soft" },
-              { l: "Profit", v: ghs(930), tone: "text-ok-deep", bg: "bg-ok-soft" },
-              { l: "Debts", v: ghs(1800), tone: "text-warn-deep", bg: "bg-warn-soft" },
-            ].map((s) => (
-              <div key={s.l} className={cx("rounded-lg p-2.5", s.bg)}>
-                <p className="text-[10px] font-bold uppercase tracking-wide text-sub">{s.l}</p>
-                <p className={cx("font-display font-extrabold text-[15px] mt-0.5 tnum", s.tone)}>{s.v}</p>
+              { l: "Sales", v: "Track", tone: "text-brand", bg: "bg-brand-soft" },
+              { l: "Stock", v: "Control", tone: "text-ok-deep", bg: "bg-ok-soft" },
+              { l: "Reports", v: "Understand", tone: "text-warn-deep", bg: "bg-warn-soft" },
+            ].map((item) => (
+              <div key={item.l} className={cx("rounded-lg p-2.5", item.bg)}>
+                <p className="text-[10px] font-bold uppercase tracking-wide text-sub">{item.l}</p>
+                <p className={cx("font-display font-extrabold text-[15px] mt-0.5", item.tone)}>{item.v}</p>
               </div>
             ))}
           </div>
 
-          <div className="mt-4">
-            <AreaMoney data={series} dataKey="sales" name="Sales" height={130} />
-          </div>
-
-          <div className="mt-2 rounded-lg border border-line divide-y divide-line overflow-hidden">
-            {latest.map((s) => (
-              <div key={s.id} className="flex items-center gap-3 px-3 py-2 bg-card">
-                <span className="size-2 rounded-full" style={{ background: METHOD_META[s.method]?.dot ?? "#999" }} />
-                <div className="min-w-0 flex-1">
-                  <p className="text-[12px] font-bold text-ink truncate">{s.customerName}</p>
-                  <p className="text-[10px] text-faint font-mono">{s.receipt} · {s.items[0]?.name}</p>
-                </div>
-                <span className="text-[12px] font-bold text-ink tnum">{ghs(s.total)}</span>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-3 space-y-2">
-            {low.map((p) => (
-              <div key={p.id} className="flex items-center gap-2.5">
-                <AlertTriangle className="size-3.5 text-warn shrink-0" />
-                <span className="text-[11px] font-semibold text-sub flex-1 truncate">{p.name}</span>
-                <Progress value={(p.stock / p.minStock) * 100} tone={p.stock === 0 ? "danger" : "warn"} className="w-16" />
-                <span className="text-[10px] font-bold text-faint tnum w-6 text-right">{p.stock}</span>
+          <div className="mt-4 rounded-lg border border-line bg-card p-4 space-y-3">
+            {["Record every sale", "Know what needs restocking", "See profit and cash flow"].map((text) => (
+              <div key={text} className="flex items-center gap-2.5 text-sm font-semibold text-sub">
+                <CheckCircle2 className="size-4 text-ok shrink-0" /> {text}
               </div>
             ))}
           </div>
@@ -158,7 +130,7 @@ function HeroMock() {
           <span className="grid place-items-center size-8 rounded-lg bg-ok-soft text-ok-deep"><CheckCircle2 className="size-4" /></span>
           <div>
             <p className="text-[11px] font-bold text-ink">Sale completed</p>
-            <p className="text-[10px] text-sub font-mono">+{ghs(400)} · MTN MoMo</p>
+            <p className="text-[10px] text-sub">Fast, clear records</p>
           </div>
         </div>
       </div>
@@ -167,7 +139,7 @@ function HeroMock() {
           <span className="grid place-items-center size-8 rounded-lg bg-warn-soft text-warn-deep"><PackageX className="size-4" /></span>
           <div>
             <p className="text-[11px] font-bold text-ink">Low stock alert</p>
-            <p className="text-[10px] text-sub">Nike Sneakers — 2 left</p>
+            <p className="text-[10px] text-sub">Stay ahead of stock</p>
           </div>
         </div>
       </div>
@@ -358,7 +330,7 @@ function ProofSection() {
   );
 }
 
-function DemoSection({ go }: { go: (to: string) => void }) {
+function SnapshotSection({ go }: { go: (to: string) => void }) {
   return (
     <section className="py-20 lg:py-24 bg-card border-y border-line">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -371,7 +343,7 @@ function DemoSection({ go }: { go: (to: string) => void }) {
               <p className="text-white/70 mt-4 leading-relaxed max-w-xl">Start with a free workspace or let us walk you through the dashboard using your own business workflow.</p>
               <div className="mt-7 flex flex-wrap gap-3">
                 <Button variant="gold" size="lg" onClick={() => go("/register")}>Start Business <ArrowRight className="size-4" /></Button>
-                <Button variant="ghost" size="lg" className="!text-white !border-white/20 hover:!bg-white/10" onClick={() => go("/demo")}>Book a walkthrough</Button>
+                <Button variant="ghost" size="lg" className="!text-white !border-white/20 hover:!bg-white/10" onClick={() => go("/register")}>Create your workspace</Button>
               </div>
             </div>
             <div className="rounded-xl border border-white/10 bg-white/8 p-5 shadow-pop">

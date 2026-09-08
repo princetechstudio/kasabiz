@@ -1,12 +1,13 @@
 /** Settings — Business / Profile / Notifications / Appearance / Subscription. */
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Bell, Building2, Check, Crown, Monitor, Moon, RefreshCcw, Save, Sun, UserRound } from "lucide-react";
+import { Bell, Building2, Check, Crown, KeyRound, Monitor, Moon, RefreshCcw, Save, Sun, UserRound } from "lucide-react";
 import { Badge, Button, Card, ConfirmModal, Field, Input, PageHeader, Progress, Select, Tabs, Toggle } from "../components/ui";
 import { useApp, useTheme } from "../state/store";
 import { authService } from "../services/authService";
 import { BUSINESS_TYPES, GH_REGIONS } from "../data/mockData";
 import { cx } from "../lib/format";
+import { setCeoPin } from "../services/ceoService";
 
 type TabId = "business" | "profile" | "notifications" | "appearance" | "subscription";
 
@@ -20,12 +21,13 @@ export default function Settings() {
     (location.state as { tab?: TabId } | null)?.tab ?? "business"
   ));
   const [resetOpen, setResetOpen] = useState(false);
+  const [ceoPin, setCeoPinValue] = useState("");
 
   const [biz, setBiz] = useState({ ...data.settings });
   const [profile, setProfile] = useState({
     name: session?.user.name ?? "Prince Ankomah",
-    email: session?.user.email ?? "prince@kasabiz.demo",
-    phone: session?.user.phone ?? "024 555 0182",
+    email: session?.user.email ?? "",
+    phone: session?.user.phone ?? "",
   });
   const [notif, setNotif] = useState({ lowStock: true, debtReminders: true, dailySummary: false });
 
@@ -62,7 +64,8 @@ export default function Settings() {
       />
 
       {tab === "business" && (
-        <Card className="p-6 animate-fade-in">
+        <div className="space-y-4 animate-fade-in">
+        <Card className="p-6">
           <div className="grid sm:grid-cols-2 gap-4">
             <Field label="Business name" className="sm:col-span-2">
               <Input value={biz.name} onChange={(e) => setBiz((b) => ({ ...b, name: e.target.value }))} />
@@ -93,6 +96,26 @@ export default function Settings() {
             <Button onClick={saveBiz}><Save className="size-4" /> Save Business Details</Button>
           </div>
         </Card>
+        <Card className="p-6">
+          <div className="flex items-start gap-3">
+            <KeyRound className="size-5 text-brand mt-1" />
+            <div className="flex-1">
+              <h2 className="font-display font-bold text-ink">CEO Dashboard PIN</h2>
+              <p className="text-sm text-sub mt-1">Create or change the 4-digit PIN used by the business owner to unlock the CEO dashboard.</p>
+              <div className="mt-4 flex flex-col sm:flex-row gap-3 sm:items-end">
+                <Field label="4-digit PIN">
+                  <Input value={ceoPin} onChange={(event) => setCeoPinValue(event.target.value.replace(/\D/g, "").slice(0, 4))} inputMode="numeric" maxLength={4} type="password" placeholder="••••" />
+                </Field>
+                <Button onClick={async () => {
+                  try { await setCeoPin(ceoPin); setCeoPinValue(""); toast("CEO PIN saved securely."); }
+                  catch (error) { toast(error instanceof Error ? error.message : "Unable to save CEO PIN.", "error"); }
+                }} disabled={ceoPin.length !== 4}><KeyRound className="size-4" /> Save PIN</Button>
+                <Button variant="secondary" onClick={() => nav("/ceo")}>Open CEO Dashboard</Button>
+              </div>
+            </div>
+          </div>
+        </Card>
+        </div>
       )}
 
       {tab === "profile" && (

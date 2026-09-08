@@ -148,6 +148,7 @@ body {
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  overflow-x: hidden;
 }
 
 ::selection {
@@ -253,6 +254,8 @@ body {
 
 .tbl-wrap {
   @apply overflow-x-auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
 }
 .tbl {
   @apply w-full text-sm border-collapse min-w-[640px];
@@ -273,16 +276,35 @@ body {
 /* --------------------------------- print --------------------------------- */
 
 @media print {
+  @page {
+    size: 80mm auto;
+    margin: 0;
+  }
+
   body * { visibility: hidden !important; }
   #print-area, #print-area * { visibility: visible !important; }
   #print-area {
     position: fixed !important;
-    inset: 0 !important;
-    width: 100% !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 80mm !important;
     max-height: none !important;
     overflow: visible !important;
     box-shadow: none !important;
     border: none !important;
+    background: #fff !important;
+    padding: 0 !important;
+  }
+  #print-area .receipt-paper {
+    width: 80mm !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 5mm !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    background: #fff !important;
+    color: #000 !important;
   }
   .no-print { display: none !important; }
 }

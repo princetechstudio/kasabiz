@@ -9,6 +9,9 @@ import { authService } from "./services/authService";
 import PublicLayout from "./components/layout/PublicLayout";
 import AppShell, { ToastHost } from "./components/layout/AppShell";
 import { Button, KenteBar } from "./components/ui";
+import Login from "./pages/auth/Login";
+import Register from "./pages/auth/Register";
+import OAuthCallback from "./pages/auth/OAuthCallback";
 
 const Landing = React.lazy(() => import("./pages/public/Landing"));
 const Pricing = React.lazy(() => import("./pages/public/Pricing"));
@@ -16,12 +19,8 @@ const Features = React.lazy(() => import("./pages/public/Features"));
 const HowItWorks = React.lazy(() => import("./pages/public/HowItWorks"));
 const FAQ = React.lazy(() => import("./pages/public/FAQ"));
 const Solutions = React.lazy(() => import("./pages/public/Solutions"));
-const Demo = React.lazy(() => import("./pages/public/Demo"));
 const Stories = React.lazy(() => import("./pages/public/Stories"));
 const Legal = React.lazy(() => import("./pages/public/Legal"));
-const Login = React.lazy(() => import("./pages/auth/Login"));
-const Register = React.lazy(() => import("./pages/auth/Register"));
-const OAuthCallback = React.lazy(() => import("./pages/auth/OAuthCallback"));
 const Dashboard = React.lazy(() => import("./pages/Dashboard"));
 const Products = React.lazy(() => import("./pages/Products"));
 const Inventory = React.lazy(() => import("./pages/Inventory"));
@@ -36,11 +35,22 @@ const Receipts = React.lazy(() => import("./pages/Receipts"));
 const Staff = React.lazy(() => import("./pages/Staff"));
 const Settings = React.lazy(() => import("./pages/Settings"));
 const Admin = React.lazy(() => import("./pages/Admin"));
+const CeoDashboard = React.lazy(() => import("./pages/CeoDashboard"));
 
 function Protected({ children }: { children: React.ReactElement }) {
   const loc = useLocation();
   if (!authService.getSession()) return <Navigate to="/login" replace state={{ from: loc.pathname }} />;
   return children;
+}
+
+function DeveloperOnly() {
+  const email = authService.getSession()?.user.email.trim().toLowerCase();
+  const allowed = (import.meta.env.VITE_DEVELOPER_EMAILS ?? "")
+    .split(",")
+    .map((value) => value.trim().toLowerCase())
+    .filter(Boolean);
+  if (!email || !allowed.includes(email)) return <NotFound />;
+  return <Admin />;
 }
 
 function NotFound() {
@@ -69,48 +79,100 @@ const Fallback = () => (
   </div>
 );
 
+class RouteLoadBoundary extends React.Component<
+  { children: React.ReactNode },
+  { failed: boolean }
+> {
+  state = { failed: false };
+
+  static getDerivedStateFromError(error: unknown) {
+    const message = error instanceof Error ? error.message : String(error);
+    if (/dynamically imported module|importing a module script failed|failed to fetch/i.test(message)) {
+      return { failed: true };
+    }
+    throw error;
+  }
+
+  componentDidMount() {
+    sessionStorage.removeItem("sikaboafo-route-retry");
+  }
+
+  componentDidCatch() {
+    const retryKey = "sikaboafo-route-retry";
+    if (!sessionStorage.getItem(retryKey)) {
+      sessionStorage.setItem(retryKey, "1");
+      window.location.reload();
+    }
+  }
+
+  render() {
+    if (!this.state.failed) return this.props.children;
+    return (
+      <div className="min-h-screen bg-paper grid place-items-center px-6">
+        <div className="text-center max-w-md">
+          <img src="/logo.png" alt="Sika Boafo" className="size-14 mx-auto rounded-2xl object-contain" />
+          <h1 className="font-display font-bold text-xl text-ink mt-4">Updating the app</h1>
+          <p className="text-sub text-sm mt-2">The latest version is being loaded. Please try again.</p>
+          <button
+            type="button"
+            className="mt-5 rounded-lg bg-brand px-4 py-2.5 text-sm font-semibold text-white"
+            onClick={() => {
+              sessionStorage.removeItem("sikaboafo-route-retry");
+              window.location.reload();
+            }}
+          >
+            Try again
+          </button>
+        </div>
+      </div>
+    );
+  }
+}
+
 export default function App() {
   return (
     <AppProvider>
       <HashRouter>
-        <Suspense fallback={<Fallback />}>
-          <Routes>
-            <Route element={<PublicLayout />}>
-              <Route path="/" element={<Landing />} />
-              <Route path="/features" element={<Features />} />
-              <Route path="/how-it-works" element={<HowItWorks />} />
-              <Route path="/pricing" element={<Pricing />} />
-              <Route path="/faq" element={<FAQ />} />
-              <Route path="/solutions/:type" element={<Solutions />} />
-              <Route path="/demo" element={<Demo />} />
-              <Route path="/stories" element={<Stories />} />
-              <Route path="/privacy" element={<Legal kind="privacy" />} />
-              <Route path="/terms" element={<Legal kind="terms" />} />
-            </Route>
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/auth/callback" element={<OAuthCallback />} />
+        <RouteLoadBoundary>
+          <Suspense fallback={<Fallback />}>
+            <Routes>
+              <Route element={<PublicLayout />}>
+                <Route path="/" element={<Landing />} />
+                <Route path="/features" element={<Features />} />
+                <Route path="/how-it-works" element={<HowItWorks />} />
+                <Route path="/pricing" element={<Pricing />} />
+                <Route path="/faq" element={<FAQ />} />
+                <Route path="/solutions/:type" element={<Solutions />} />
+                <Route path="/stories" element={<Stories />} />
+                <Route path="/privacy" element={<Legal kind="privacy" />} />
+                <Route path="/terms" element={<Legal kind="terms" />} />
+              </Route>
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/auth/callback" element={<OAuthCallback />} />
+              <Route path="/admin" element={<DeveloperOnly />} />
 
-            <Route element={<Protected><AppShell /></Protected>}>
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/products" element={<Products />} />
-              <Route path="/inventory" element={<Inventory />} />
-              <Route path="/sales" element={<Sales />} />
-              <Route path="/sales/new" element={<NewSale />} />
-              <Route path="/customers" element={<Customers />} />
-              <Route path="/debtors" element={<Debtors />} />
-              <Route path="/expenses" element={<Expenses />} />
-              <Route path="/purchases" element={<Purchases />} />
-              <Route path="/reports" element={<Reports />} />
-              <Route path="/receipts" element={<Receipts />} />
-              <Route path="/staff" element={<Staff />} />
-              <Route path="/settings" element={<Settings />} />
-            </Route>
+              <Route element={<Protected><AppShell /></Protected>}>
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/ceo" element={<CeoDashboard />} />
+                <Route path="/products" element={<Products />} />
+                <Route path="/inventory" element={<Inventory />} />
+                <Route path="/sales" element={<Sales />} />
+                <Route path="/sales/new" element={<NewSale />} />
+                <Route path="/customers" element={<Customers />} />
+                <Route path="/debtors" element={<Debtors />} />
+                <Route path="/expenses" element={<Expenses />} />
+                <Route path="/purchases" element={<Purchases />} />
+                <Route path="/reports" element={<Reports />} />
+                <Route path="/receipts" element={<Receipts />} />
+                <Route path="/staff" element={<Staff />} />
+                <Route path="/settings" element={<Settings />} />
+              </Route>
 
-            <Route path="/admin" element={<Admin />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Suspense>
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
+        </RouteLoadBoundary>
         <ToastHost />
       </HashRouter>
     </AppProvider>

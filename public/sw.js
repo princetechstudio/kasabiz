@@ -1,4 +1,4 @@
-const CACHE_NAME = "sikaboafo-shell-v2";
+const CACHE_NAME = "sikaboafo-shell-v5";
 const APP_SHELL = ["/", "/index.html", "/manifest.webmanifest", "/logo.png"];
 
 self.addEventListener("install", (event) => {
@@ -19,16 +19,19 @@ self.addEventListener("fetch", (event) => {
   const request = event.request;
   if (request.method !== "GET" || new URL(request.url).origin !== self.location.origin) return;
 
+  const isNavigation = request.mode === "navigate";
   event.respondWith(
-    caches.match(request).then((cached) => cached || fetch(request).then((response) => {
-      if (response.ok) {
+    fetch(request).then((response) => {
+      if (response.ok && response.type === "basic") {
         const copy = response.clone();
-        caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
+        void caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
       }
       return response;
-    }).catch(() => {
-      if (request.mode === "navigate") return caches.match("/index.html");
-      throw new Error("Asset request failed");
-    }))
+    }).catch(async () => {
+      const cached = await caches.match(request);
+      if (cached) return cached;
+      if (isNavigation) return caches.match("/index.html");
+      return Response.error();
+    })
   );
 });

@@ -181,7 +181,7 @@ export default function Pricing() {
 
         <div className="text-center mt-12">
           <Button size="lg" onClick={() => go("/register")}>Create your free account <ArrowRight className="size-4" /></Button>
-          <p className="text-xs text-faint mt-3">Prices include all taxes. Frontend demo — no real charge is made.</p>
+          <p className="text-xs text-faint mt-3">Prices include all taxes. You can cancel anytime.</p>
         </div>
       </div>
       <Modal

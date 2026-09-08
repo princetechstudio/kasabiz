@@ -1,4 +1,4 @@
-/** Login — demo auth. Swap authService.login for a real backend later. */
+/** Login form backed by the configured authentication service. */
 import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ArrowLeft, Eye, EyeOff, LogIn, Mail, Lock, Smartphone } from "lucide-react";
@@ -18,6 +18,7 @@ export default function Login() {
   const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
   const [resetOpen, setResetOpen] = useState(false);
   const [resetSent, setResetSent] = useState(false);
+  const [resetBusy, setResetBusy] = useState(false);
   const [authError, setAuthError] = useState<string | null>(null);
   const { toast } = useApp();
 
@@ -52,6 +53,24 @@ export default function Login() {
       setAuthError(message);
       toast(message, "error");
       setBusy(null);
+    }
+  };
+
+  const sendResetLink = async () => {
+    if (!/^\S+@\S+\.\S+$/.test(email)) {
+      toast("Enter a valid email address.", "error");
+      return;
+    }
+    setResetBusy(true);
+    try {
+      await authService.requestPasswordReset(email.trim());
+      setResetSent(true);
+      toast("If that account exists, a reset link is on its way.", "success");
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Unable to send the reset link.";
+      toast(message, "error");
+    } finally {
+      setResetBusy(false);
     }
   };
 
@@ -115,13 +134,13 @@ export default function Login() {
         footer={
           <>
             <Button variant="secondary" onClick={() => setResetOpen(false)}>Close</Button>
-            <Button onClick={() => setResetSent(true)} disabled={resetSent}>{resetSent ? "Link sent" : "Send reset link"}</Button>
+        <Button onClick={() => void sendResetLink()} loading={resetBusy} disabled={resetSent}>{resetSent ? "Link sent" : "Send reset link"}</Button>
           </>
         }>
         {resetSent ? (
           <div className="flex items-start gap-3 rounded-lg bg-ok-soft border border-ok/25 px-4 py-3">
             <Badge tone="ok">Sent</Badge>
-            <p className="text-sm text-ink/80">If <b>{email}</b> exists, a reset link is on its way. (Frontend demo — no email is actually sent.)</p>
+            <p className="text-sm text-ink/80">If <b>{email}</b> exists, a reset link is on its way.</p>
           </div>
         ) : (
           <Field label="Email">
